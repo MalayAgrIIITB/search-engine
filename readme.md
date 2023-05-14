@@ -62,6 +62,25 @@ Course  {f1.txt=10, f4.txt=14, f5.txt=16}
 Court   {f3.txt=2, f4.txt=5, f2.txt=9}
 ```
 
+There's are only two dependencies for the MapReduce jobs:
+
+- Hadoop 3.3.5.
+- JSoup 1.61.1.
+
+The `pom.xml` file is set up so that `maven` always builds a FAT JAR with all the dependencies. The JAR will be named `inverted-index-1.0-SNAPSHOT.jar`. The JAR can be executed using`YARN` as follows:
+
+```bash
+yarn jar inverted-index-1.0-SNAPSHOT.jar <path-to-input> <path-to-output> <path-to-stop-words>
+```
+
+Where `<path-to-input>` is a directory on HDFS containing text files, `<path-to-output>` is a non-existent directory on HDFS where the output will be stored and `<path-to-stop-words>` is a the path to a file on HDFS which should be used to ignore certain words.
+
+Example:
+
+```bash
+yarn jar inverted /input/Wikipedia /output/Wikipedia /input/stopwords.txt
+```
+
 ## Python
 
 The utility script that writes the output of the MapReduce jobs to MongoDB is present in the `python` directly, with its own `requirements.txt`. The script uses [`pymongo`](https://github.com/mongodb/mongo-python-driver) and [`joblib`](https://github.com/joblib/joblib) to write large amounts of data very quickly to MongoDB. It is implemented as a CLI application to allow for maximum customization. The usage is shown below:
